@@ -80,13 +80,15 @@ df
 ####### ЗАДАНИЕ 25 (26) #######
 ###############################
 # Создаем фрейм
-Hmin <- c(400, 501, 801, 1301, 1601, 2301, 2501, 3301)
-Hmax <- c(500, 800, 1300, 1600, 2300, 2500, 3300, 5000)
-Zone <- c("step", "nizkogorniye lesa", "srednegorniye lesa", "smeshanniye lesa",
-          "krivolesya", "subalpiiskiye lesa", "subnivalnaya zona", "glyzcialno-nivalnaya zona")
-belt <- data.frame(Hmin, Hmax, Zone)
+belt <- data.frame(
+  Hmin = c(400, 501, 801, 1301, 1601, 2301, 2501, 3301), 
+  Hmax = c(500, 800, 1300, 1600, 2300, 2500, 3300, 5000),
+  Zone = c("step", "nizkogorniye lesa", "srednegorniye lesa", "smeshanniye lesa",
+           "krivolesya", "subalpiiskiye lesa", "subnivalnaya zona", "glyzcialno-nivalnaya zona"))
+belt
 
 # прога, возвращающая высотный пояс по высоте
 height <- as.numeric(readline(prompt = "Hello! Input your height: "))
 belt[belt$Hmin <= height & height <= belt$Hmax, ]
 # идет проверка по столбцам belt, пустота после запятой - выводим все столбцы
+
