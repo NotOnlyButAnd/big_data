@@ -1,6 +1,11 @@
 # импортируем данные по всем годам олимпад страны Австралия
-history.winter <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/history winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");history.winter
-history.summer <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/history summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");history.summer
+#history.winter <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/history winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");history.winter
+#history.summer <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/history summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");history.summer
+
+history.winter <- read.csv(file = "C:/Users/s0153478/Downloads/lab_4_CSV's/history winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");history.winter
+history.summer <- read.csv(file = "C:/Users/s0153478/Downloads/lab_4_CSV's/history summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");history.summer
+
+
 
 # строим график, отображающий историю изменения олимпийских достижений во времени
 par(mar = c(5, 5, 4, 2))
@@ -57,7 +62,10 @@ mtext(side = 1, text = at, at = at,
 
 #####################
 # импортируем данные по плаванию Австралии
-olympic.swimming <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/swimming.csv", header = TRUE, sep = ",", encoding = "UTF-8");olympic.swimming
+#olympic.swimming <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/swimming.csv", header = TRUE, sep = ",", encoding = "UTF-8");olympic.swimming
+
+olympic.swimming <- read.csv(file = "C:/Users/s0153478/Downloads/lab_4_CSV's/swimming.csv", header = TRUE, sep = ",", encoding = "UTF-8");olympic.swimming
+
 
 # преобразуем данные - суммируем кол-во мест 1-8
 olympic.swimming.vars <- apply(olympic.swimming[3:10],1,sum);olympic.swimming.vars
@@ -77,6 +85,8 @@ barplot(olympic.swimming.vars,
 par(mar = c(5, 3, 4, 2))
 olympic.swimming.gold0 <- olympic.swimming[olympic.swimming$Золото>0,]$Золото;olympic.swimming.gold0
 olympic.swimming.gold0.years <- olympic.swimming[olympic.swimming$Золото>0,]$Год;olympic.swimming.gold0.years
+
+
 pie(olympic.swimming.gold0, 
     olympic.swimming.gold0.years,
     clockwise = TRUE, # откладывать сектора по часовой стрелке
@@ -95,10 +105,16 @@ legend("topleft",
 # по женщинам и мужчинам тенденции
 par(mar = c(5, 5, 4, 2))
 # считываем данные
-male.winter <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/male winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");male.winter
-male.summer <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/male summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");male.summer
-female.winter <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/female winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");female.winter
-female.summer <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/female summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");female.summer
+#male.winter <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/male winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");male.winter
+#male.summer <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/male summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");male.summer
+#female.winter <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/female winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");female.winter
+#female.summer <- read.csv(file = "F:/Кирилл/003 УНИВЕР/3 курс/004 2 семестр/big data/ЛР4/female summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");female.summer
+
+male.winter <- read.csv(file = "C:/Users/s0153478/Downloads/lab_4_CSV's/male winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");male.winter
+male.summer <- read.csv(file = "C:/Users/s0153478/Downloads/lab_4_CSV's/male summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");male.summer
+female.winter <- read.csv(file = "C:/Users/s0153478/Downloads/lab_4_CSV's/female winter.csv", header = TRUE, sep = ",", encoding = "UTF-8");female.winter
+female.summer <- read.csv(file = "C:/Users/s0153478/Downloads/lab_4_CSV's/female summer.csv", header = TRUE, sep = ",", encoding = "UTF-8");female.summer
+
 
 
 #считаем кол-во медалей всего
@@ -152,3 +168,95 @@ mtext(side = 1,
 
 ####################
 # ЗАДАНИЕ 3
+# собираем инфу по 7 странам за почти последние 4 олимпуды:
+years = c('2006', '2010', '2014', '2018')
+
+#первые места
+Germany_1<-c(11, 10, 8, 14)
+USA_1<-c(9, 9, 9, 9)
+Austria_1<-c(9, 4, 4, 5)
+Russia_1<-c(8, 3, 13, 2)
+Canada_1<-c(7, 14, 10, 11)
+Sweden_1<-c(7, 5, 7, 7)
+SouthKor_1<-c(6, 6, 3, 5)
+
+#вторые места
+Germany_2<-c(12, 13, 6, 10)
+USA_2<-c(9, 15, 7, 8)
+Austria_2<-c(7, 6, 8, 3)
+Russia_2<-c(6, 5, 11, 6)
+Canada_2<-c(10, 7, 10, 8)
+Sweden_2<-c(2, 2, 7, 6)
+SouthKor_2<-c(3, 6, 3, 8)
+
+#третьи места
+Germany_3<-c(6, 7, 5, 7)
+USA_3<-c(7, 13, 12, 6)
+Austria_3<-c(7, 6, 5, 6)
+Russia_3<-c(8, 7, 9, 9)
+Canada_3<-c(7, 5, 5, 10)
+Sweden_3<-c(5, 4, 6, 1)
+SouthKor_3<-c(2, 2, 2, 4)
+
+# золотые медали
+plot(years, Germany_1, type='b', 
+     ylim = c(0, 30),
+     ylab = 'Кол-во',
+     xlab = 'Года',
+     main = 'Кол-во золотых меделай по странам',
+     col.main = 'black',
+     col.lab = 'black')
+
+lines(years, USA_1, type='b', col = 'purple')
+lines(years,Austria_1, type='b', col = 'orange')
+lines(years,Russia_1, type='b', col = 'red')
+lines(years,Canada_1, type='b', col = 'blue')
+lines(years,Sweden_1, type='b', col = 'yellow')
+lines(years,SouthKor_1, type='b', col = 'green')
+
+lbl = c('Германия','США', 'Австралия', 'Россия', 'Канада',  'Швеция', 'Южная Корея')
+color = c("black","purple", 'orange', 'red', 'blue', 'yellow', 'green')
+
+legend("topleft",
+       title = 'Страны',
+       lbl,lty=c(1,1,1,1,1,1,1),
+       fill = color,
+       bg ="white",
+       bty='n')
+
+# по призовым 3 местам
+Germany_all<-Germany_1+Germany_2+Germany_3;Germany_all
+USA_all<-USA_1+USA_2+USA_3;USA_all
+Austria_all<-Austria_1+Austria_2+Austria_3
+Russia_all<-Russia_1+Russia_2+Russia_3
+Canada_all<-Canada_1+Canada_2+Canada_3
+Sweden_all<-Sweden_1+Sweden_2+Sweden_3
+SouthKor_all<-SouthKor_1+SouthKor_2+SouthKor_3
+
+plot(years, Germany_all, type='b', 
+     ylim = c(0, 50),
+     ylab = 'Кол-во',
+     xlab = 'Года',
+     main = 'Кол-во призовых мест по странам',
+     col.main = 'black',
+     col.lab = 'black')
+
+lines(years, USA_all, type='b', col = 'purple')
+lines(years,Austria_all, type='b', col = 'orange')
+lines(years,Russia_all, type='b', col = 'red')
+lines(years,Canada_all, type='b', col = 'blue')
+lines(years,Sweden_all, type='b', col = 'yellow')
+lines(years,SouthKor_all, type='b', col = 'green')
+
+legend("topleft",
+       title = 'Страны',
+       lbl,lty=c(1,1,1,1,1,1,1),
+       fill = color,
+       bg ="white",
+       bty='n',
+       cex=0.65)
+
+####################
+# ЗАДАНИЕ 4
+# смотрим плавание по 5 олимудам
+
