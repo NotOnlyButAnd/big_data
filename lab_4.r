@@ -259,4 +259,100 @@ legend("topleft",
 ####################
 # ЗАДАНИЕ 4
 # смотрим плавание по 5 олимудам
+# 2020, 2016, 2012, 2008, 2004
+years_fe_m <- c(2020, 2016, 2012, 2008, 2004)
+swim_male_1 <- c(14, 17, 17, 15, 16)
+swim_male_2 <- c(18, 19, 19, 17, 16)
+swim_male_3 <- c(18, 16, 15, 19, 16)
+swim_female_1 <- c(23, 18, 17, 19, 16)
+swim_female_2 <- c(18, 16, 17, 17, 16)
+swim_female_3 <- c(18, 18, 17, 17, 16)
 
+# строим графики по достижениям в плавании М\Ж
+# сперва мужчин отобразим
+plot(years_fe_m, 
+     swim_male_1, 
+     type='l', 
+     col='gold', 
+     main='Кол-во медалей за последние\n5 олимпиад, плавание (м/ж)',
+     xlab='Года',
+     ylab='Кол-во медалей',
+     ylim=c(12,24), # пределы по оси y посчитали
+     xaxt="n")  # не отображаем стандартные отметки иксов
+# серебро
+lines(years_fe_m, 
+      swim_male_2, 
+      type='l',
+      lty=1,
+      col='gray')
+# бронза
+lines(years_fe_m, 
+      swim_male_3, 
+      type='l',
+      lty=1,
+      col='orange')
+
+# теперь женщины
+lines(years_fe_m, 
+      swim_female_1, 
+      type='l',
+      lty=2,
+      col='gold')
+# серебро
+lines(years_fe_m, 
+      swim_female_2, 
+      type='l',
+      lty=2,
+      col='gray')
+# бронза
+lines(years_fe_m, 
+      swim_female_3, 
+      type='l',
+      lty=2,
+      col='orange')
+
+# добавляем легенду
+legend("topleft", inset=.01, 
+       c("Мужчины (1) ","Женщины (1)", "Мужчины (2) ","Женщины (2)",  "Мужчины (3) ","Женщины (3)"),
+       lty=c(1, 2, 1, 2, 1, 2), 
+       col=c("gold", "gold", "gray", "gray", "orange", "orange"),
+       cex=0.7,
+       bty = "n")        # Box type (bty = "n" removes the box)) 
+
+at <- years_fe_m;at
+mtext(side = 1, 
+      text = at, 
+      at = at, 
+      col = "grey20", line = 1, cex = 0.9, las=2)
+
+# рисуем столбчатую диаграмму 
+fe_m_all <- data.matrix(data.frame(swim_male_1, swim_female_1, swim_male_2, swim_female_2, swim_male_3, swim_female_3))
+
+barplot(fe_m_all,
+        ylab='Кол-во медалей',
+        main="Кол-во мест 1-3. М/Ж. Плавание",
+        names.arg=c("Мужчины (1) ","Женщины (1)", "Мужчины (2) ","Женщины (2)",  "Мужчины (3) ","Женщины (3)"),
+        las=1,
+        col=rainbow(5),
+        beside = TRUE,
+        ylim=c(0,25))
+legend("topleft", 
+       c("2020","2016","2012","2008","2004"),
+       cex = 0.8,
+       fill = rainbow(5),
+       bty = "n") 
+
+# рисуем круговую диаграмму (по годам сделаем короче)
+fe_m_all <- data.matrix(data.frame(swim_male_1 + swim_male_2 + swim_male_3, swim_female_1 + swim_female_2 + swim_female_3))
+pie(fe_m_all, 
+    c("М", "М", "М", "М", "М", "Ж", "Ж", "Ж", "Ж", "Ж"),
+    clockwise = TRUE, # откладывать сектора по часовой стрелке
+    main="Медали по годам. М/Ж, плавание",
+    cex=0.8, # размер подписей
+    radius=1,
+    col=rainbow(5))
+legend("topleft", 
+       c("2020","2016","2012","2008","2004"),
+       cex = 0.8,
+       fill = rainbow(5),
+       bty = "n")
