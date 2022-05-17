@@ -209,38 +209,293 @@ traffic_by_y = getTrafficByYears()
 traffic_by_y
 ######################################################
 
-
 ### сперва отобразим графики показателей, которые "чем выше тем лучше"
-attach(mtcars)
-opar <- par(no.readonly=TRUE)
-par(mfrow=c(2,2)) # будет четыре графика
-
-### Отрисовываем графики ###
-par(mar = c(5, 5, 4, 2))
-years = colnames(pur_by_y)[2:9]; years
-
-plot(years, 
-     pur_by_y[1, 2:9], 
-     type='l', 
-     col='gold', 
-     main='Изменения покупательской способности
+drawHigherGraphics <- function(){
+  attach(mtcars)
+  opar <- par(no.readonly=TRUE)
+  # будет четыре графика
+  par(oma = c(1,1,1,1), mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+  
+  ### Отрисовываем графики ###
+  par(mar = c(5, 5, 4, 2))
+  years = colnames(pur_by_y)[2:9]; years
+  
+  # покупательская способоность
+  plot(years, 
+       pur_by_y[1, 2:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения покупательской способности
      по странам',
-     cex.main = 1,   # Title size
-     xlab='Года',
-     ylab='Значение индекса',
-     ylim=c(min(pur_by_y[4, 2:9]),max(pur_by_y[2, 2:9])+1))
-lines(years, 
-      pur_by_y[2, 2:9], 
-      type='l', 
-      col='gray')
-lines(years, 
-      pur_by_y[3, 2:9], 
-      type='l', 
-      col='blue')
-lines(years, 
-      pur_by_y[4, 2:9], 
-      type='l', 
-      col='red')
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(pur_by_y[4, 2:9]),max(pur_by_y[2, 2:9])+1))
+  lines(years, 
+        pur_by_y[2, 2:9], 
+        type='l', 
+        col='green')
+  lines(years, 
+        pur_by_y[3, 2:9], 
+        type='l', 
+        col='blue')
+  lines(years, 
+        pur_by_y[4, 2:9], 
+        type='l', 
+        col='red')
+  
+  # безопасность
+  plot(years, 
+       sec_by_y[1, 2:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения индекса безопасности
+     по странам',
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(sec_by_y[1, 2:9]),max(sec_by_y[2, 2:9])+1))
+  lines(years, 
+        sec_by_y[2, 2:9], 
+        type='l', 
+        col='green')
+  lines(years, 
+        sec_by_y[3, 2:9], 
+        type='l', 
+        col='blue')
+  lines(years, 
+        sec_by_y[4, 2:9], 
+        type='l', 
+        col='red')
+  
+  # медицина
+  plot(years, 
+       health_by_y[1, 2:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения индекса мед обслуживания
+     по странам',
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(health_by_y[4, 2:9]),max(health_by_y[2, 2:9])+1))
+  lines(years, 
+        health_by_y[2, 2:9], 
+        type='l', 
+        col='green')
+  lines(years, 
+        health_by_y[3, 2:9], 
+        type='l', 
+        col='blue')
+  lines(years, 
+        health_by_y[4, 2:9], 
+        type='l', 
+        col='red')
+  
+  # климат
+  plot(years[3:8], 
+       climate_by_y[1, 4:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения климатического индекса
+     по странам',
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(climate_by_y[1, 4:9]),max(climate_by_y[4, 4:9])+1))
+  lines(years[3:8], 
+        climate_by_y[2, 4:9], 
+        type='l', 
+        col='green')
+  lines(years[3:8], 
+        climate_by_y[3, 4:9], 
+        type='l', 
+        col='blue')
+  lines(years[3:8], 
+        climate_by_y[4, 4:9], 
+        type='l', 
+        col='red')
+  
+  par(opar)
+  detach(mtcars)
+  
+  par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
+  plot(0, 0, type = 'l', bty = 'n', xaxt = 'n', yaxt = 'n')
+  legend('bottom',
+         legend = c("Norway","Germany", "United Kingdom", "Greece"),
+         col = c("gold", "green", "blue", "red"),
+         lwd = 5,
+         xpd = TRUE,
+         horiz = TRUE,
+         cex = 0.7,
+         seg.len=1,
+         bty = 'n')
+}
+drawHigherGraphics()
 
-par(opar)
-detach(mtcars)
+
+### затем отобразим графики показателей, которые "чем НИЖЕ тем лучше"
+drawLowerGraphics <- function(){
+  attach(mtcars)
+  opar <- par(no.readonly=TRUE)
+  # будет четыре графика
+  par(oma = c(1,1,1,1), mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+  
+  ### Отрисовываем графики ###
+  par(mar = c(5, 5, 4, 2))
+  years = colnames(pur_by_y)[2:9]; years
+  
+  # загрязнение
+  plot(years, 
+       pollut_by_y[1, 2:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения индекса загрязнения
+     по странам',
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(pollut_by_y[1, 2:9]),max(pollut_by_y[4, 2:9])+1))
+  lines(years, 
+        pollut_by_y[2, 2:9], 
+        type='l', 
+        col='green')
+  lines(years, 
+        pollut_by_y[3, 2:9], 
+        type='l', 
+        col='blue')
+  lines(years, 
+        pollut_by_y[4, 2:9], 
+        type='l', 
+        col='red')
+  
+  # жилье \ доход
+  plot(years, 
+       prop_to_rat_by_y[1, 2:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения отношения цены жилья 
+       к доходам по странам',
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(prop_to_rat_by_y[2, 2:9] - 1),max(prop_to_rat_by_y[4, 2:9])+1))
+  lines(years, 
+        prop_to_rat_by_y[2, 2:9], 
+        type='l', 
+        col='green')
+  lines(years, 
+        prop_to_rat_by_y[3, 2:9], 
+        type='l', 
+        col='blue')
+  lines(years, 
+        prop_to_rat_by_y[4, 2:9], 
+        type='l', 
+        col='red')
+  
+  # прожиточный минимум (стоимость жизни)
+  plot(years, 
+       cost_liv_by_y[1, 2:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения индекса прожиточного
+     минимума по странам',
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(cost_liv_by_y[4, 2:9])-1,max(cost_liv_by_y[1, 2:9])+1))
+  lines(years, 
+        cost_liv_by_y[2, 2:9], 
+        type='l', 
+        col='green')
+  lines(years, 
+        cost_liv_by_y[3, 2:9], 
+        type='l', 
+        col='blue')
+  lines(years, 
+        cost_liv_by_y[4, 2:9], 
+        type='l', 
+        col='red')
+  
+  # дороги
+  plot(years[3:8], 
+       traffic_by_y[1, 4:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения индекса дорожного
+     траффика по странам',
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(traffic_by_y[1, 4:9])-1,max(traffic_by_y[3, 4:9])+1))
+  lines(years[3:8], 
+        traffic_by_y[2, 4:9], 
+        type='l', 
+        col='green')
+  lines(years[3:8], 
+        traffic_by_y[3, 4:9], 
+        type='l', 
+        col='blue')
+  lines(years[3:8], 
+        traffic_by_y[4, 4:9], 
+        type='l', 
+        col='red')
+  
+  par(opar)
+  detach(mtcars)
+  
+  par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
+  plot(0, 0, type = 'l', bty = 'n', xaxt = 'n', yaxt = 'n')
+  legend('bottom',
+         legend = c("Norway","Germany", "United Kingdom", "Greece"),
+         col = c("gold", "green", "blue", "red"),
+         lwd = 5,
+         xpd = TRUE,
+         horiz = TRUE,
+         cex = 0.7,
+         seg.len=1,
+         bty = 'n')
+}
+drawLowerGraphics()
+
+### затем отобразим изменение рейтинга уровня жизни по всем 4 странам
+drawRateGraphic <- function(){
+  par(mar = c(5, 5, 4, 2))
+  # рейтинг
+  plot(years[3:8], 
+       q_life_by_y[1, 4:9], 
+       type='l', 
+       col='gold', 
+       main='Изменения индекса качества
+     жизни по странам',
+       cex.main = 1,   # Title size
+       xlab='Года',
+       ylab='Значение индекса',
+       ylim=c(min(q_life_by_y[4, 4:9])-1,max(q_life_by_y[2, 4:9])+1))
+  lines(years[3:8], 
+        q_life_by_y[2, 4:9], 
+        type='l', 
+        col='green')
+  lines(years[3:8], 
+        q_life_by_y[3, 4:9], 
+        type='l', 
+        col='blue')
+  lines(years[3:8], 
+        q_life_by_y[4, 4:9], 
+        type='l', 
+        col='red')
+  
+  par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
+  plot(0, 0, type = 'l', bty = 'n', xaxt = 'n', yaxt = 'n')
+  legend('bottom',
+         legend = c("Norway","Germany", "United Kingdom", "Greece"),
+         col = c("gold", "green", "blue", "red"),
+         lwd = 5,
+         xpd = TRUE,
+         horiz = TRUE,
+         cex = 0.7,
+         seg.len=1,
+         bty = 'n')
+}
+drawRateGraphic()
+
