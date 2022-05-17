@@ -502,4 +502,42 @@ drawRateGraphic()
 ##################################
 ######## Scrapping музеев ########
 ##################################
+# читаем html музейский, текущую страницу
+getArticlesByUrl <- function(my_url){
+  url = read_html(my_url)
+  #selector_name<-"ul.places-list"
+  selector_name<-"h3.places-list__item-header"
+  
+  # достаем узлы
+  result <- html_nodes(url, selector_name) %>% html_text() %>% as.array()
+
+  result
+}
+
+# читаем все страницы и добавляем заголовки с них
+all_articles <- getArticlesByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=2#ttl')
+all_articles <- append(all_articles, getArticlesByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0#ttl'))
+all_articles <- append(all_articles, getArticlesByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=3#ttl'))
+all_articles <- append(all_articles, getArticlesByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=4#ttl'))
+all_articles <- append(all_articles, getArticlesByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=5#ttl'))
+all_articles
+
+# получение ссылок с картинок
+getUrlPicByUrl <- function(my_url){
+  url = read_html(my_url)
+  url
+  selector_name<-".places-list__item-img.places-list__item-img--rc"
+  selector_name
+  result <- html_nodes(url, selector_name) %>% html_attr("href")
+  
+  result
+}
+all_web_p <- getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=2#ttl')
+all_web_p <- append(all_web_p, getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0#ttl'))
+all_web_p <- append(all_web_p, getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=3#ttl'))
+all_web_p <- append(all_web_p, getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=4#ttl'))
+all_web_p <- append(all_web_p, getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=5#ttl'))
+all_web_p
+all_web_p <- paste0('https://tonkosti.ru/', all_web_p)
+all_web_p
 
