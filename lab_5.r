@@ -418,8 +418,8 @@ drawLowerGraphics <- function(){
         col='red')
   
   # дороги
-  plot(years[3:8], 
-       traffic_by_y[1, 4:9], 
+  plot(years, 
+       traffic_by_y[1, 2:9], 
        type='l', 
        col='gold', 
        main='Изменения индекса дорожного
@@ -427,17 +427,17 @@ drawLowerGraphics <- function(){
        cex.main = 1,   # Title size
        xlab='Года',
        ylab='Значение индекса',
-       ylim=c(min(traffic_by_y[1, 4:9])-1,max(traffic_by_y[3, 4:9])+1))
-  lines(years[3:8], 
-        traffic_by_y[2, 4:9], 
+       ylim=c(min(traffic_by_y[1, 2:9])-1,max(traffic_by_y[3, 2:9])+1))
+  lines(years, 
+        traffic_by_y[2, 2:9], 
         type='l', 
         col='green')
-  lines(years[3:8], 
-        traffic_by_y[3, 4:9], 
+  lines(years, 
+        traffic_by_y[3, 2:9], 
         type='l', 
         col='blue')
-  lines(years[3:8], 
-        traffic_by_y[4, 4:9], 
+  lines(years, 
+        traffic_by_y[4, 2:9], 
         type='l', 
         col='red')
   
@@ -462,8 +462,8 @@ drawLowerGraphics()
 drawRateGraphic <- function(){
   par(mar = c(5, 5, 4, 2))
   # рейтинг
-  plot(years[3:8], 
-       q_life_by_y[1, 4:9], 
+  plot(years, 
+       q_life_by_y[1, 2:9], 
        type='l', 
        col='gold', 
        main='Изменения индекса качества
@@ -471,17 +471,17 @@ drawRateGraphic <- function(){
        cex.main = 1,   # Title size
        xlab='Года',
        ylab='Значение индекса',
-       ylim=c(min(q_life_by_y[4, 4:9])-1,max(q_life_by_y[2, 4:9])+1))
-  lines(years[3:8], 
-        q_life_by_y[2, 4:9], 
+       ylim=c(min(q_life_by_y[4, 2:9])-1,max(q_life_by_y[2, 2:9])+1))
+  lines(years, 
+        q_life_by_y[2, 2:9], 
         type='l', 
         col='green')
-  lines(years[3:8], 
-        q_life_by_y[3, 4:9], 
+  lines(years, 
+        q_life_by_y[3, 2:9], 
         type='l', 
         col='blue')
-  lines(years[3:8], 
-        q_life_by_y[4, 4:9], 
+  lines(years, 
+        q_life_by_y[4, 2:9], 
         type='l', 
         col='red')
   
@@ -498,4 +498,8 @@ drawRateGraphic <- function(){
          bty = 'n')
 }
 drawRateGraphic()
+
+##################################
+######## Scrapping музеев ########
+##################################
 
