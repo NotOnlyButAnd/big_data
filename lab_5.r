@@ -1,3 +1,4 @@
+install.packages("rvest")
 library(rvest)
 # при создании df_2014 ругался что нет такого пакета, попробовал его установить вот так
 # после этого датафрейм был создан
@@ -45,6 +46,8 @@ df_2018 = getCountriesIndexesByYear(2018)
 df_2019 = getCountriesIndexesByYear(2019)
 df_2020 = getCountriesIndexesByYear(2020)
 df_2021 = getCountriesIndexesByYear(2021)
+
+url = read_html('https://www.numbeo.com/quality-of-life/rankings_by_country.jsp?title=2014')
 
 
 ###########################################
@@ -510,7 +513,7 @@ getArticlesByUrl <- function(my_url){
   
   # достаем узлы
   result <- html_nodes(url, selector_name) %>% html_text() %>% as.array()
-
+  
   result
 }
 
@@ -525,7 +528,7 @@ all_articles
 # получение ссылок с картинок
 getUrlPicByUrl <- function(my_url){
   url = read_html(my_url)
-  url
+  
   selector_name<-".places-list__item-img.places-list__item-img--rc"
   selector_name
   result <- html_nodes(url, selector_name) %>% html_attr("href")
@@ -541,3 +544,22 @@ all_web_p
 all_web_p <- paste0('https://tonkosti.ru/', all_web_p)
 all_web_p
 
+# получение адресов
+getAddrByUrl <- function(my_url){
+  url = read_html(my_url)
+  
+  selector_name<-".places-list__address.places-list__address--rc"
+  selector_name
+  result <- html_nodes(url, selector_name) %>% html_text() %>% as.array()
+  
+  result
+}
+
+all_addr <- getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=2#ttl')
+all_addr <- append(all_addr, getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0#ttl'))
+all_addr <- append(all_addr, getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=3#ttl'))
+all_addr <- append(all_addr, getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=4#ttl'))
+all_addr <- append(all_addr, getUrlPicByUrl('https://tonkosti.ru/%D0%9C%D1%83%D0%B7%D0%B5%D0%B8_%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D0%B0?page=5#ttl'))
+all_addr
+
+all_museum_data <- data.frame(all_articles, all_addr, all_web_p)
