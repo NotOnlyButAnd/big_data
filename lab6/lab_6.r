@@ -80,11 +80,6 @@ names <- c("Фиксированная кислотность", "Летучая 
 
 # 12 - quality (score between 0 and 10)
 
-maxes <- apply(wine_red, 2, max)
-minims <- apply(wine_red, 2, min)
-maxes
-minims
-
 # судя по максимумам и минимумам по каждой переменной:
 #   плотность у вин этой марки почти одинаковая, поэтому ее можно и не 
 # учитывать при анализе (удалить нафиг);
@@ -103,6 +98,11 @@ names <- c("Фиксированная кислотность", "Летучая 
            "Остаточный сахар", "Хлориды", "Cвободный диоксид серы",
            "Общий диоксид серы",
            "Сульфаты","Алкогольность")
+
+maxes <- apply(wine_red, 2, max)
+minims <- apply(wine_red, 2, min)
+maxes
+minims
 
 # нормализуем (стандартизуем??) (данные-то разные "метрики" имеют)
 wines <- scale(wine_red, center = minims, scale = maxes - minims)
@@ -141,11 +141,12 @@ plot(cut(hcd, h = 10)$lower[[5]],
      main = "Branch 5",
      xlab="Экземпляры  вин")
 
-rect.hclust(clust_wines, k = 8, border = "blue")
-# судя по дендрограмме, довольно удобно разбить хотя бы на 8 кластеров
+rect.hclust(clust_wines, k = 6, border = "blue")
 
 # Разбиение дендрограммы на кластеры
-groups <- cutree(clust_wines, k = 8)
+# оценки - 3, 4, 5, ..., 8 => 6 кластеров образно говоря
+groups <- cutree(clust_wines, k = 6)
+groups
 
 wines[groups==1, 1]
 wines[groups==2, 1]
@@ -153,8 +154,8 @@ wines[groups==3, 1]
 wines[groups==4, 1]
 wines[groups==5, 1]
 wines[groups==6, 1]
-wines[groups==7, 1]
-wines[groups==8, 1]
+#wines[groups==7, 1]
+#wines[groups==8, 1]
 
 # Вычисляем среднее значение показателей в каждом кластере
 g1<-colMeans(wines[groups==1,])
@@ -163,12 +164,12 @@ g3<-colMeans(wines[groups==3,])
 g4<-colMeans(wines[groups==4,])
 g5<-colMeans(wines[groups==5,])
 g6<-colMeans(wines[groups==6,])
-g7<-colMeans(wines[groups==7,])
-g8<-colMeans(wines[groups==8,])
+#g7<-colMeans(wines[groups==7,])
+#g8<-colMeans(wines[groups==8,])
 
 # Построение столбчатой диаграммы
 par(mfrow = c(1, 1))
-df <- data.frame(g1,g2,g3,g4,g5,g6,g7,g8)
+df <- data.frame(g1,g2,g3,g4,g5,g6)
 rownames(df) <- names
 barplot(data.matrix(df),
         main="Группы вин",
@@ -201,5 +202,114 @@ xyplot(fixed.acidity ~ alcohol, wine_red, main='Зависимость алко�
 xyplot(fixed.acidity+volatile.acidity ~ alcohol, wine_red, auto.key = TRUE, main="Зависимость алкогольности вина от \nфиксированной и летучей кислотности",
        xlab="Алкогольность",
        ylab="фиксир. + летуч. кислотность")
+
+####################################################
+####################################################
+# КЛАССИФИКАЦИЯ (лаб 6_2)
+####################################################
+####################################################
+groups #разбитые по классам винишки
+
+# Преобразование в фактор
+groups_f <- factor(groups)
+
+wines <- data.frame(wines)
+wines <- cbind(wines, groups_f)
+
+# Классификация по формуле Байеса
+install.packages("klaR")
+library(klaR)
+
+# Вычисление вероятностей по всем признакам
+naive_wines <- NaiveBayes(wines$groups_f ~ ., wines)
+naive_wines$tables # 1 - средние значения, 2 - стандартное отклонение
+
+# Ядерные функции плотности условной вероятности
+plot(naive_wines,lwd = 2, legendplot=TRUE)
+
+# Классификация по вероятностным данным (убрали кластеры)
+predict <- predict(naive_wines, wines[,-10])$class
+
+# Соотношение фактического расстояния и прогноза
+table(Группа = wines$groups_f, Прогноз = predict)
+
+# Вычисление точности классификации по формуле Байеса
+accuracy_bayes <- mean(predict == wines$groups_f)
+accuracy_bayes
+paste("Точность=", round(100*accuracy_bayes, 2), "%", sep = "")
+
+########################
+# Деревья решений
+########################
+set.seed(1234) # для постоянства генератора случайных чисел
+
+
+# Индексирование данных, для 1 вероятность 60%, для 2 - 40%
+index <- sample(2, nrow(wines), replace=TRUE, prob=c(0.6, 0.4))
+
+# разбиваем на две выборки - обучающую и тестовую
+trainData <- wines[index==1,]
+testData <- wines[index==2,]
+nrow(trainData) # 983
+nrow(testData)  # 616
+nrow(wines)     # => 1599 (верно)
+
+install.packages("party")
+library(party)
+
+# Построение модели
+# Указываем зависимость групп от каждого параметра
+formula <- groups_f ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + chlorides + free.sulfur.dioxide + total.sulfur.dioxide + sulphates + alcohol
+wines_ctree <- ctree(formula, trainData)
+
+# Обучение модели
+table(predict(wines_ctree), trainData$groups_f)
+
+#очистка графика
+dev.off()
+# новое окно для графика
+windows()
+# чтобы адекватно увидеть это большое дерево, можно в новом окне его отрисовать
+# или же сохранить как картинку, с параметрми хотя бы 6000х800
+# весить PNG будет около 100 кБ
+
+plot(wines_ctree,
+     cex=0.2)
+
+# Применение модели
+test_predict <- predict(wines_ctree, newdata=testData)
+table(test_predict, testData$groups_f)
+
+# оценим точность
+accuracy_tree <- mean(test_predict == testData$groups_f)
+# всякие ненужные штуки для отображения (но раньше они мне пригодились)
+#  length(testData$groups_f)
+#  length(test_predict)
+#  print(test_predict)
+accuracy_tree
+paste("Точность=", round(100*accuracy_tree, 2), "%", sep = "")
+
+########################
+# Случайный лес
+########################
+install.packages("randomForest")
+library(randomForest)
+
+# Обучение модели
+forest <- randomForest(groups_f ~ .,trainData, ntree=15, proximity=TRUE)
+table(predict(forest), trainData$groups_f)
+
+# Применение на тестовой выборке
+test_forest <- randomForest(groups_f ~ .,testData, ntree=15, proximity=TRUE)
+table(predict(test_forest), testData$groups_f)
+
+# просто на test forest не работал - это же модель по факту.... или я не понял?
+accuracy_forest <- mean(predict(test_forest) == testData$groups_f)
+accuracy_forest
+
+# всякие ненужные штуки для отображения (но раньше они мне пригодились)
+#  length(testData$groups_f)
+#  length(test_forest)
+#  print(test_forest)
 
 
